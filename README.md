@@ -1,0 +1,2 @@
+# MiZ
+For phylogenetics class
