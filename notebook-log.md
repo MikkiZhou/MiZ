@@ -18,15 +18,15 @@ Aligning my data HW
     
 Failed to align data due to laptop's limit
 
-NEW DATASET
+#NEW DATASET
 Dataset: https://www.mdpi.com/1422-0067/26/3/1021
 Original Dataset: 23 complete CHPV genome
 10 was selected randomly.
 
-#Command to combine files
+##Command to combine files
 - cat *.fna > combined.fna
 
-#Command to run MUSCLE
+##Command to run MUSCLE
 - muscle -align combined.fna -output aligned.fasta
 
 muscle 5.3.osxarm64 [-]  17.2Gb RAM, 12 cores
@@ -41,7 +41,7 @@ Input: 10 seqs, avg length 11080, max 11120, min 11037
 00:00 4.4Mb  CPU has 12 cores, running 12 threads
 Killed: 9Mb     2.8% Calc posteriors
 
-#Command to run CLUSTALW
+##Command to run CLUSTALW
 - clustalw -ALIGN -INFILE=combined.fna -OUTFILE=aligned_clustalw.fasta -OUTPUT=FASTA
 
 
@@ -130,3 +130,206 @@ FASTA file created!
 Fasta-Alignment file created    [aligned_clustalw.fasta]
 
 (base) Mikkis-MacBook-Pro:data mikkizhou$ 
+
+#Orthology using OrthoFinder
+orthofinder -d -f Chandipura_virus/
+ 
+OrthoFinder version 2.5.5 Copyright (C) 2014 David Emms
+
+2025-03-04 23:12:54 : Starting OrthoFinder 2.5.5
+12 thread(s) for highly parallel tasks (BLAST searches etc.)
+1 thread(s) for OrthoFinder algorithm
+
+Checking required programs are installed
+----------------------------------------
+Test can run "mcl -h" - ok
+Test can run "fastme -i /Users/mikkizhou/Desktop/Chandipura_virus/OrthoFinder/Results_Mar04_1/WorkingDirectory/dependencies/SimpleTest.phy -o /Users/mikkizhou/Desktop/Chandipura_virus/OrthoFinder/Results_Mar04_1/WorkingDirectory/dependencies/SimpleTest.tre" - ok
+
+WARNING: Files have been ignored as they don't appear to be FASTA files:
+.DS_Store
+OrthoFinder expects FASTA files to have one of the following extensions: fa, fasta, pep, faa, fas
+
+Dividing up work for BLAST for parallel processing
+--------------------------------------------------
+2025-03-04 23:12:58 : Creating blast_nucl database 1 of 10
+2025-03-04 23:12:58 : Creating blast_nucl database 2 of 10
+2025-03-04 23:12:59 : Creating blast_nucl database 3 of 10
+2025-03-04 23:12:59 : Creating blast_nucl database 4 of 10
+2025-03-04 23:12:59 : Creating blast_nucl database 5 of 10
+2025-03-04 23:12:59 : Creating blast_nucl database 6 of 10
+2025-03-04 23:12:59 : Creating blast_nucl database 7 of 10
+2025-03-04 23:12:59 : Creating blast_nucl database 8 of 10
+2025-03-04 23:12:59 : Creating blast_nucl database 9 of 10
+2025-03-04 23:12:59 : Creating blast_nucl database 10 of 10
+
+Running blast_nucl all-versus-all
+---------------------------------
+Using 12 thread(s)
+2025-03-04 23:12:59 : This may take some time....
+2025-03-04 23:13:00 : Done 0 of 100
+2025-03-04 23:13:00 : Done 10 of 100
+2025-03-04 23:13:00 : Done 20 of 100
+2025-03-04 23:13:00 : Done 30 of 100
+2025-03-04 23:13:00 : Done 40 of 100
+2025-03-04 23:13:00 : Done 50 of 100
+2025-03-04 23:13:01 : Done 60 of 100
+2025-03-04 23:13:01 : Done 70 of 100
+2025-03-04 23:13:01 : Done 80 of 100
+2025-03-04 23:13:02 : Done all-versus-all sequence search
+
+Running OrthoFinder algorithm
+-----------------------------
+2025-03-04 23:13:02 : Initial processing of each species
+WARNING: THIS IS UNCOMMON, there are zero hits when searching the genes in species 0 against itself. Check the input proteome contains all the genes from that species and check the search program is working (default is diamond).
+WARNING: Too few hits between species 0 and species 1 to normalise the scores, these hits will be ignored
+WARNING: Too few hits between species 0 and species 2 to normalise the scores, these hits will be ignored
+WARNING: Too few hits between species 0 and species 3 to normalise the scores, these hits will be ignored
+WARNING: Too few hits between species 0 and species 4 to normalise the scores, these hits will be ignored
+WARNING: Too few hits between species 0 and species 5 to normalise the scores, these hits will be ignored
+WARNING: Too few hits between species 0 and species 6 to normalise the scores, these hits will be ignored
+WARNING: Too few hits between species 0 and species 7 to normalise the scores, these hits will be ignored
+WARNING: Too few hits between species 0 and species 8 to normalise the scores, these hits will be ignored
+WARNING: Too few hits between species 0 and species 9 to normalise the scores, these hits will be ignored
+2025-03-04 23:13:02 : Initial processing of species 0 complete
+WARNING: Too few hits between species 1 and species 0 to normalise the scores, these hits will be ignored
+WARNING: THIS IS UNCOMMON, there are zero hits when searching the genes in species 1 against itself. Check the input proteome contains all the genes from that species and check the search program is working (default is diamond).
+WARNING: Too few hits between species 1 and species 2 to normalise the scores, these hits will be ignored
+WARNING: Too few hits between species 1 and species 3 to normalise the scores, these hits will be ignored
+WARNING: Too few hits between species 1 and species 4 to normalise the scores, these hits will be ignored
+WARNING: Too few hits between species 1 and species 5 to normalise the scores, these hits will be ignored
+WARNING: Too few hits between species 1 and species 6 to normalise the scores, these hits will be ignored
+WARNING: Too few hits between species 1 and species 7 to normalise the scores, these hits will be ignored
+WARNING: Too few hits between species 1 and species 8 to normalise the scores, these hits will be ignored
+WARNING: Too few hits between species 1 and species 9 to normalise the scores, these hits will be ignored
+2025-03-04 23:13:02 : Initial processing of species 1 complete
+WARNING: Too few hits between species 2 and species 0 to normalise the scores, these hits will be ignored
+WARNING: Too few hits between species 2 and species 1 to normalise the scores, these hits will be ignored
+WARNING: THIS IS UNCOMMON, there are zero hits when searching the genes in species 2 against itself. Check the input proteome contains all the genes from that species and check the search program is working (default is diamond).
+WARNING: Too few hits between species 2 and species 3 to normalise the scores, these hits will be ignored
+WARNING: Too few hits between species 2 and species 4 to normalise the scores, these hits will be ignored
+WARNING: Too few hits between species 2 and species 5 to normalise the scores, these hits will be ignored
+WARNING: Too few hits between species 2 and species 6 to normalise the scores, these hits will be ignored
+WARNING: Too few hits between species 2 and species 7 to normalise the scores, these hits will be ignored
+WARNING: Too few hits between species 2 and species 8 to normalise the scores, these hits will be ignored
+WARNING: Too few hits between species 2 and species 9 to normalise the scores, these hits will be ignored
+2025-03-04 23:13:02 : Initial processing of species 2 complete
+WARNING: Too few hits between species 3 and species 0 to normalise the scores, these hits will be ignored
+WARNING: Too few hits between species 3 and species 1 to normalise the scores, these hits will be ignored
+WARNING: Too few hits between species 3 and species 2 to normalise the scores, these hits will be ignored
+WARNING: THIS IS UNCOMMON, there are zero hits when searching the genes in species 3 against itself. Check the input proteome contains all the genes from that species and check the search program is working (default is diamond).
+WARNING: Too few hits between species 3 and species 4 to normalise the scores, these hits will be ignored
+WARNING: Too few hits between species 3 and species 5 to normalise the scores, these hits will be ignored
+WARNING: Too few hits between species 3 and species 6 to normalise the scores, these hits will be ignored
+WARNING: Too few hits between species 3 and species 7 to normalise the scores, these hits will be ignored
+WARNING: Too few hits between species 3 and species 8 to normalise the scores, these hits will be ignored
+WARNING: Too few hits between species 3 and species 9 to normalise the scores, these hits will be ignored
+2025-03-04 23:13:02 : Initial processing of species 3 complete
+WARNING: Too few hits between species 4 and species 0 to normalise the scores, these hits will be ignored
+WARNING: Too few hits between species 4 and species 1 to normalise the scores, these hits will be ignored
+WARNING: Too few hits between species 4 and species 2 to normalise the scores, these hits will be ignored
+WARNING: Too few hits between species 4 and species 3 to normalise the scores, these hits will be ignored
+WARNING: THIS IS UNCOMMON, there are zero hits when searching the genes in species 4 against itself. Check the input proteome contains all the genes from that species and check the search program is working (default is diamond).
+WARNING: Too few hits between species 4 and species 5 to normalise the scores, these hits will be ignored
+WARNING: Too few hits between species 4 and species 6 to normalise the scores, these hits will be ignored
+WARNING: Too few hits between species 4 and species 7 to normalise the scores, these hits will be ignored
+WARNING: Too few hits between species 4 and species 8 to normalise the scores, these hits will be ignored
+WARNING: Too few hits between species 4 and species 9 to normalise the scores, these hits will be ignored
+2025-03-04 23:13:02 : Initial processing of species 4 complete
+WARNING: Too few hits between species 5 and species 0 to normalise the scores, these hits will be ignored
+WARNING: Too few hits between species 5 and species 1 to normalise the scores, these hits will be ignored
+WARNING: Too few hits between species 5 and species 2 to normalise the scores, these hits will be ignored
+WARNING: Too few hits between species 5 and species 3 to normalise the scores, these hits will be ignored
+WARNING: Too few hits between species 5 and species 4 to normalise the scores, these hits will be ignored
+WARNING: THIS IS UNCOMMON, there are zero hits when searching the genes in species 5 against itself. Check the input proteome contains all the genes from that species and check the search program is working (default is diamond).
+WARNING: Too few hits between species 5 and species 6 to normalise the scores, these hits will be ignored
+WARNING: Too few hits between species 5 and species 7 to normalise the scores, these hits will be ignored
+WARNING: Too few hits between species 5 and species 8 to normalise the scores, these hits will be ignored
+WARNING: Too few hits between species 5 and species 9 to normalise the scores, these hits will be ignored
+2025-03-04 23:13:02 : Initial processing of species 5 complete
+WARNING: Too few hits between species 6 and species 0 to normalise the scores, these hits will be ignored
+WARNING: Too few hits between species 6 and species 1 to normalise the scores, these hits will be ignored
+WARNING: Too few hits between species 6 and species 2 to normalise the scores, these hits will be ignored
+WARNING: Too few hits between species 6 and species 3 to normalise the scores, these hits will be ignored
+WARNING: Too few hits between species 6 and species 4 to normalise the scores, these hits will be ignored
+WARNING: Too few hits between species 6 and species 5 to normalise the scores, these hits will be ignored
+WARNING: THIS IS UNCOMMON, there are zero hits when searching the genes in species 6 against itself. Check the input proteome contains all the genes from that species and check the search program is working (default is diamond).
+WARNING: Too few hits between species 6 and species 7 to normalise the scores, these hits will be ignored
+WARNING: Too few hits between species 6 and species 8 to normalise the scores, these hits will be ignored
+WARNING: Too few hits between species 6 and species 9 to normalise the scores, these hits will be ignored
+2025-03-04 23:13:02 : Initial processing of species 6 complete
+WARNING: Too few hits between species 7 and species 0 to normalise the scores, these hits will be ignored
+WARNING: Too few hits between species 7 and species 1 to normalise the scores, these hits will be ignored
+WARNING: Too few hits between species 7 and species 2 to normalise the scores, these hits will be ignored
+WARNING: Too few hits between species 7 and species 3 to normalise the scores, these hits will be ignored
+WARNING: Too few hits between species 7 and species 4 to normalise the scores, these hits will be ignored
+WARNING: Too few hits between species 7 and species 5 to normalise the scores, these hits will be ignored
+WARNING: Too few hits between species 7 and species 6 to normalise the scores, these hits will be ignored
+WARNING: THIS IS UNCOMMON, there are zero hits when searching the genes in species 7 against itself. Check the input proteome contains all the genes from that species and check the search program is working (default is diamond).
+WARNING: Too few hits between species 7 and species 8 to normalise the scores, these hits will be ignored
+WARNING: Too few hits between species 7 and species 9 to normalise the scores, these hits will be ignored
+2025-03-04 23:13:02 : Initial processing of species 7 complete
+WARNING: Too few hits between species 8 and species 0 to normalise the scores, these hits will be ignored
+WARNING: Too few hits between species 8 and species 1 to normalise the scores, these hits will be ignored
+WARNING: Too few hits between species 8 and species 2 to normalise the scores, these hits will be ignored
+WARNING: Too few hits between species 8 and species 3 to normalise the scores, these hits will be ignored
+WARNING: Too few hits between species 8 and species 4 to normalise the scores, these hits will be ignored
+WARNING: Too few hits between species 8 and species 5 to normalise the scores, these hits will be ignored
+WARNING: Too few hits between species 8 and species 6 to normalise the scores, these hits will be ignored
+WARNING: Too few hits between species 8 and species 7 to normalise the scores, these hits will be ignored
+WARNING: THIS IS UNCOMMON, there are zero hits when searching the genes in species 8 against itself. Check the input proteome contains all the genes from that species and check the search program is working (default is diamond).
+WARNING: Too few hits between species 8 and species 9 to normalise the scores, these hits will be ignored
+2025-03-04 23:13:02 : Initial processing of species 8 complete
+WARNING: Too few hits between species 9 and species 0 to normalise the scores, these hits will be ignored
+WARNING: Too few hits between species 9 and species 1 to normalise the scores, these hits will be ignored
+WARNING: Too few hits between species 9 and species 2 to normalise the scores, these hits will be ignored
+WARNING: Too few hits between species 9 and species 3 to normalise the scores, these hits will be ignored
+WARNING: Too few hits between species 9 and species 4 to normalise the scores, these hits will be ignored
+WARNING: Too few hits between species 9 and species 5 to normalise the scores, these hits will be ignored
+WARNING: Too few hits between species 9 and species 6 to normalise the scores, these hits will be ignored
+WARNING: Too few hits between species 9 and species 7 to normalise the scores, these hits will be ignored
+WARNING: Too few hits between species 9 and species 8 to normalise the scores, these hits will be ignored
+WARNING: THIS IS UNCOMMON, there are zero hits when searching the genes in species 9 against itself. Check the input proteome contains all the genes from that species and check the search program is working (default is diamond).
+2025-03-04 23:13:02 : Initial processing of species 9 complete
+2025-03-04 23:13:05 : Connected putative homologues
+2025-03-04 23:13:05 : Written final scores for species 0 to graph file
+2025-03-04 23:13:05 : Written final scores for species 1 to graph file
+2025-03-04 23:13:05 : Written final scores for species 2 to graph file
+2025-03-04 23:13:05 : Written final scores for species 3 to graph file
+2025-03-04 23:13:05 : Written final scores for species 4 to graph file
+2025-03-04 23:13:05 : Written final scores for species 5 to graph file
+2025-03-04 23:13:05 : Written final scores for species 6 to graph file
+2025-03-04 23:13:05 : Written final scores for species 7 to graph file
+2025-03-04 23:13:05 : Written final scores for species 8 to graph file
+2025-03-04 23:13:05 : Written final scores for species 9 to graph file
+2025-03-04 23:13:05 : Ran MCL
+
+Writing orthogroups to file
+---------------------------
+/Users/mikkizhou/miniconda3/lib/python3.12/site-packages/numpy/_core/fromnumeric.py:3596: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+/Users/mikkizhou/miniconda3/lib/python3.12/site-packages/numpy/_core/_methods.py:138: RuntimeWarning: invalid value encountered in scalar divide
+  ret = ret.dtype.type(ret / rcount)
+
+  File "/Users/mikkizhou/miniconda3/bin/scripts_of/__main__.py", line 1787, in main
+    DoOrthogroups(options, speciesInfoObj, seqsInfo)
+  File "/Users/mikkizhou/miniconda3/bin/scripts_of/__main__.py", line 1412, in DoOrthogroups
+    Stats(ogs, speciesNamesDict, speciesInfoObj.speciesToUse, files.FileHandler.iResultsVersion)
+  File "/Users/mikkizhou/miniconda3/bin/scripts_of/__main__.py", line 760, in Stats
+    j, _ = next((i, x) for i, x in enumerate(L) if x > nAssigned/2)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Traceback (most recent call last):
+  File "/Users/mikkizhou/miniconda3/bin/orthofinder", line 7, in <module>
+    main(args)
+  File "/Users/mikkizhou/miniconda3/bin/scripts_of/__main__.py", line 1787, in main
+    DoOrthogroups(options, speciesInfoObj, seqsInfo)    
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mikkizhou/miniconda3/bin/scripts_of/__main__.py", line 1412, in DoOrthogroups
+    Stats(ogs, speciesNamesDict, speciesInfoObj.speciesToUse, files.FileHandler.iResultsVersion)
+  File "/Users/mikkizhou/miniconda3/bin/scripts_of/__main__.py", line 760, in Stats
+    j, _ = next((i, x) for i, x in enumerate(L) if x > nAssigned/2)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+-Download all the data from the paper
+- All files changed to .fa
+for file in *.fna; do mv "$file" "${file%.fna}.fa"; done
+
