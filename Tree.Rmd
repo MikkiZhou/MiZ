@@ -1,0 +1,34 @@
+---
+title: "TICR"
+output: html_document
+date: "2025-03-04"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(ape)
+library(adegenet)
+library(phangorn)
+library(stats)
+library(ade4)
+```
+
+# mdl.pl
+
+```{r}
+mdl.pl aligned_clustalw.fasta -b 100
+```
+
+```{r}
+tre = read.tree(text = "((M_fascicul:0.056051,((((((Chimp:0.061148,H_sapiens:0.049591):0.027607,Gorilla:0.059164):0.086003,Orangutan:0.153008):0.057773,Gibbon:0.183184):0.137786,(Saimiri:0.506800,(Tarsius:0.575945,Lemur:0.394939):0.311863):0.131951):0.288287,M_sylvanus:0.073820):0.045765):0.034571,Macaca:0.015931,M_mulatta:0.022187);")
+
+plot(tre)
+```
+```{r}
+tre.iq = read.tree(text = "(MT019612.1:0.0000898628,(MT019613.1:0.0000012594,HM627186.1:0.0000012594):0.0000012594,(MT019615.1:0.0071118023,((ON158118.1:0.0251758905,ON158119.1:0.0265439762):0.1822887721,(((GU190711.1:0.0020708347,GU212857.1:0.0029260543):0.0119097640,GU212858.1:0.0133424700):0.0063418664,PQ185534.1:0.0102607182):0.3431568336):0.1736045541):0.0125759966);")
+
+plot(tre.iq)
+
+```
+
