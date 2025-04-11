@@ -1500,7 +1500,7 @@ FASTA file created!
 Fasta-Alignment file created    [23combined-clustal2.fasta]
 
 # Maximum likelihood
-##  RaxMl
+##  RaxMl-clustal
 - ./raxml-ng --check --msa 23combined-clustal2.fasta --model GTR+G
 
 RAxML-NG v. 1.2.2 released on 30.04.2024 by The Exelixis Lab.
@@ -1886,4 +1886,585 @@ Execution log saved to: /Users/mikkizhou/Documents/raxml-ng_v1/T1.raxml.log
 Analysis started: 20-Mar-2025 22:44:22 / finished: 20-Mar-2025 22:45:01
 
 Elapsed time: 39.317 seconds
+
+# Mr Bayes
+- Description
+    uses MCMC to estimate the posterior probability distribution of trees and model parameters.
+- Strength
+    - stimates both tree topology and model parameters simultaneously
+    - upports complex models (e.g., partitioned models, mixed substitution models)
+    - convergence diagnostics (e.g., PSRF, ESS)
+    - can run multiple chains and swap between them
+- Weak
+    - too many user choices to choose from
+    - sensitive to priors and model misspecification
+    - complex setup for beginners
+- Assumptions
+    - Priors accurately reflect prior knowledge or are uninformative
+    - MCMC converges and sufficiently samples posterior
+ - User Choices
+    - substitution model (e.g., GTR, HKY)
+    - Priors (branch lengths, base frequencies)
+    - ngen, burn-in, sampling frequency
+    - partition the data or not
+    - heated chains and chain temperature settings
+    
+- DOWNLOAD
+    conda install -c bioconda mrbayes
+
+- Convert fasta to nexus file using RStudio
+    - clustal: /Users/mikkizhou/Desktop/MiZ/results/aligned_in_use/23combined-clustal2.fasta
+library(ape)
+fasta_data <- read.dna(file.choose(), format = "fasta")
+write.nexus.data(fasta_data, file = "clustal_aligned.nex", format = "dna")
+
+    - FILE MOVED TO /Users/mikkizhou/Desktop/MiZ/results
+
+    - muscle: 
+    /Users/mikkizhou/Desktop/MiZ/results/aligned_in_use/23combined-muscle.fasta
+
+fasta_data <- read.dna(file.choose(), format = "fasta")
+write.nexus.data(fasta_data, file = "muscle_aligned.nex", format = "dna")
+
+- Mr Bayes 
+MrBayes > set usebeagle=no
+MrBayes > execute clustal_aligned.nex 
+MrBayes > lset nst=6 rates=invgamma
+MrBayes > mcmc ngen=40000 samplefreq=100 printfreq=100 diagnfreq=1000
+MrBayes > sump
+Analysis completed in 6 mins 34 seconds
+   Analysis used 394.32 seconds of CPU time
+   Likelihood of best state for "cold" chain of run 1 was -49744.62
+   Likelihood of best state for "cold" chain of run 2 was -49745.00
+
+   Acceptance rates for the moves in the "cold" chain of run 1:
+      With prob.   (last 100)   chain accepted proposals by move
+          3.2 %     (  3 %)     Dirichlet(Revmat)
+         29.4 %     ( 27 %)     Slider(Revmat)
+          1.4 %     (  1 %)     Dirichlet(Pi)
+         10.8 %     ( 14 %)     Slider(Pi)
+         28.1 %     ( 31 %)     Multiplier(Alpha)
+         22.6 %     ( 29 %)     Slider(Pinvar)
+         12.5 %     ( 12 %)     ExtSPR(Tau,V)
+         11.7 %     (  7 %)     ExtTBR(Tau,V)
+         15.5 %     ( 19 %)     NNI(Tau,V)
+         14.6 %     ( 15 %)     ParsSPR(Tau,V)
+         25.7 %     ( 33 %)     Multiplier(V)
+         21.9 %     ( 20 %)     Nodeslider(V)
+          7.1 %     (  6 %)     TLMultiplier(V)
+
+   Acceptance rates for the moves in the "cold" chain of run 2:
+      With prob.   (last 100)   chain accepted proposals by move
+          3.7 %     (  1 %)     Dirichlet(Revmat)
+         28.9 %     ( 28 %)     Slider(Revmat)
+          1.6 %     (  2 %)     Dirichlet(Pi)
+          6.4 %     (  5 %)     Slider(Pi)
+         29.9 %     ( 29 %)     Multiplier(Alpha)
+         22.0 %     ( 26 %)     Slider(Pinvar)
+         13.3 %     ( 18 %)     ExtSPR(Tau,V)
+         11.4 %     ( 11 %)     ExtTBR(Tau,V)
+         15.1 %     ( 13 %)     NNI(Tau,V)
+         14.5 %     ( 17 %)     ParsSPR(Tau,V)
+         25.6 %     ( 21 %)     Multiplier(V)
+         22.6 %     ( 22 %)     Nodeslider(V)
+          6.4 %     ( 12 %)     TLMultiplier(V)
+
+   Chain swap information for run 1:
+
+               1      2      3      4 
+        ------------------------------
+      1 |          0.60   0.23   0.09 
+      2 |  12338          0.52   0.26 
+      3 |  12141  12459          0.65 
+      4 |  12543  12307  12212        
+
+   Chain swap information for run 2:
+
+               1      2      3      4 
+        ------------------------------
+      1 |          0.65   0.36   0.12 
+      2 |  12160          0.65   0.26 
+      3 |  12210  12450          0.54 
+      4 |  12426  12337  12417        
+
+   Upper diagonal: Proportion of successful state exchanges between chains
+   Lower diagonal: Number of attempted state exchanges between chains
+
+   Chain information:
+
+     ID -- Heat 
+    -----------
+      1 -- 1.00  (cold chain)
+      2 -- 0.91 
+      3 -- 0.83 
+      4 -- 0.77 
+
+   Heat = 1 / (1 + T * (ID - 1))
+      (where T = 0.10 is the temperature and ID is the chain number)
+
+
+MrBayes > sump
+
+   Summarizing parameters in files clustal_aligned.nex.run1.p and clustal_aligned.nex.run2.p
+   Writing summary statistics to file clustal_aligned.nex.pstat
+   Using relative burnin ('relburnin=yes'), discarding the first 25 % of samples
+
+   Below are rough plots of the generation (x-axis) versus the log   
+   probability of observing the data (y-axis). You can use these     
+   graphs to determine what the burn in for your analysis should be. 
+   When the log probability starts to plateau you may be at station- 
+   arity. Sample trees and parameters after the log probability      
+   plateaus. Of course, this is not a guarantee that you are at sta- 
+   tionarity. Also examine the convergence diagnostics provided by   
+   the 'sump' and 'sumt' commands for all the parameters in your     
+   model. Remember that the burn in is the number of samples to dis- 
+   card. There are a total of ngen / samplefreq samples taken during 
+   a MCMC analysis.                                                  
+
+   Overlay plot for both runs:
+   (1 = Run number 1; 2 = Run number 2; * = Both runs)
+
+   +------------------------------------------------------------+ -49750.09
+   |               2                     1                      |
+   |            222  2                                          |
+   |         1                                   1              |
+   |                            1                              2|
+   |2               1     11            1    1 21   2      1    |
+   | 2    22 22 1      121         2           12 12  22   2 22 |
+   |    2   2 11    2 2     1 1 211    22 1   2      2  2 1 2   |
+   |  22 *  1    1      122      2  2 21 2 1*             2   11|
+   | 1  1  1   2     112   22  *          22  1   2 1 11 2      |
+   |              1          1     1         2     1    11      |
+   |1                         2   2              2           1  |
+   |  11           1                 2                      1   |
+   |                                  1                         |
+   |      1                         1                           |
+   |                         2       1               1          |
+   +------+-----+-----+-----+-----+-----+-----+-----+-----+-----+ -49771.73
+   ^                                                            ^
+   18500                                                        74000
+
+   Overwriting file "clustal_aligned.nex.lstat"
+
+   Estimated marginal likelihoods for runs sampled in files
+      "clustal_aligned.nex.run1.p" and "clustal_aligned.nex.run2.p":
+      (Use the harmonic mean for Bayes factor comparisons of models)
+
+      (Values are saved to the file clustal_aligned.nex.lstat)
+
+   Run   Arithmetic mean   Harmonic mean
+   --------------------------------------
+     1     -49750.47        -49788.13
+     2     -49749.46        -49778.72
+   --------------------------------------
+   TOTAL   -49749.84        -49787.44
+   --------------------------------------
+
+
+   Model parameter summaries over the runs sampled in files
+      "clustal_aligned.nex.run1.p" and "clustal_aligned.nex.run2.p":
+      Summaries are based on a total of 1112 samples from 2 runs.
+      Each run produced 741 samples of which 556 samples were included.
+      Parameter summaries saved to file "clustal_aligned.nex.pstat".
+   Overwriting file "clustal_aligned.nex.pstat"
+
+                                         95% HPD Interval
+                                       --------------------
+   Parameter      Mean      Variance     Lower       Upper       Median    min ESS*  avg ESS    PSRF+ 
+   --------------------------------------------------------------------------------------------------
+   TL          1.225426    0.001049    1.163493    1.290321    1.225042     82.49    102.75    1.000
+   r(A<->C)    0.103078    0.000017    0.094856    0.110937    0.103031     56.60     62.74    1.010
+   r(A<->G)    0.331892    0.000116    0.313240    0.353289    0.330093     21.48     23.95    0.999
+   r(A<->T)    0.034476    0.000008    0.027782    0.039036    0.034606     20.05     33.59    1.002
+   r(C<->G)    0.013183    0.000006    0.008776    0.018456    0.013244     36.49     45.76    1.000
+   r(C<->T)    0.472885    0.000120    0.451907    0.490899    0.473525     20.71     33.36    0.999
+   r(G<->T)    0.044487    0.000009    0.038956    0.050339    0.044461     77.86     86.16    1.005
+   pi(A)       0.308722    0.000016    0.300064    0.315007    0.309259      9.46     13.88    1.003
+   pi(C)       0.201072    0.000010    0.195645    0.207043    0.201403     34.07     44.49    1.000
+   pi(G)       0.223522    0.000009    0.218137    0.230256    0.223596     81.42     82.26    1.002
+   pi(T)       0.266684    0.000011    0.260643    0.273410    0.266737     14.60     33.35    1.002
+   alpha       2.032248    0.281377    0.239260    2.664264    2.093005    311.45    333.00    1.006
+   pinvar      0.501365    0.015277    0.019159    0.560811    0.531976    171.93    232.83    1.016
+   --------------------------------------------------------------------------------------------------
+   * Convergence diagnostic (ESS = Estimated Sample Size); min and avg values
+     correspond to minimal and average ESS among runs. 
+     ESS value below 100 may indicate that the parameter is undersampled. 
+   + Convergence diagnostic (PSRF = Potential Scale Reduction Factor; Gelman
+     and Rubin, 1992) should approach 1.0 as runs converge.
+
+MrBayes > sumt
+
+   Summarizing trees in files "clustal_aligned.nex.run1.t" and "clustal_aligned.nex.run2.t"
+   Using relative burnin ('relburnin=yes'), discarding the first 25 % of sampled trees
+   Writing statistics to files clustal_aligned.nex.<parts|tstat|vstat|trprobs|con>
+   Examining first file ...
+   Found one tree block in file "clustal_aligned.nex.run1.t" with 741 trees in last block
+   Expecting the same number of trees in the last tree block of all files
+
+   Tree reading status:
+
+   0      10      20      30      40      50      60      70      80      90     100
+   v-------v-------v-------v-------v-------v-------v-------v-------v-------v-------v
+   *********************************************************************************
+
+   Read a total of 1482 trees in 2 files (sampling 1112 of them)
+      (Each file contained 741 trees of which 556 were sampled)
+                                                                                   
+   General explanation:                                                          
+                                                                                   
+   In an unrooted tree, a taxon bipartition (split) is specified by removing a   
+   branch, thereby dividing the species into those to the left and those to the  
+   right of the branch. Here, taxa to one side of the removed branch are denoted 
+   '.' and those to the other side are denoted '*'. Specifically, the '.' symbol 
+   is used for the taxa on the same side as the outgroup.                        
+                                                                                   
+   In a rooted or clock tree, the tree is rooted using the model and not by      
+   reference to an outgroup. Each bipartition therefore corresponds to a clade,  
+   that is, a group that includes all the descendants of a particular branch in  
+   the tree.  Taxa that are included in each clade are denoted using '*', and    
+   taxa that are not included are denoted using the '.' symbol.                  
+                                                                                   
+   The output first includes a key to all the bipartitions with frequency larger 
+   or equual to (Minpartfreq) in at least one run. Minpartfreq is a parameter to 
+   sumt command and currently it is set to 0.10.  This is followed by a table  
+   with statistics for the informative bipartitions (those including at least    
+   two taxa), sorted from highest to lowest probability. For each bipartition,   
+   the table gives the number of times the partition or split was observed in all
+   runs (#obs) and the posterior probability of the bipartition (Probab.), which 
+   is the same as the split frequency. If several runs are summarized, this is   
+   followed by the minimum split frequency (Min(s)), the maximum frequency       
+   (Max(s)), and the standard deviation of frequencies (Stddev(s)) across runs.  
+   The latter value should approach 0 for all bipartitions as MCMC runs converge.
+                                                                                   
+   This is followed by a table summarizing branch lengths, node heights (if a    
+   clock model was used) and relaxed clock parameters (if a relaxed clock model  
+   was used). The mean, variance, and 95 % credible interval are given for each 
+   of these parameters. If several runs are summarized, the potential scale      
+   reduction factor (PSRF) is also given; it should approach 1 as runs converge. 
+   Node heights will take calibration points into account, if such points were   
+   used in the analysis.                                                         
+                                                                                 
+   Note that Stddev may be unreliable if the partition is not present in all     
+   runs (the last column indicates the number of runs that sampled the partition 
+   if more than one run is summarized). The PSRF is not calculated at all if     
+   the partition is not present in all runs.The PSRF is also sensitive to small  
+   sample sizes and it should only be considered a rough guide to convergence    
+   since some of the assumptions allowing one to interpret it as a true potential
+   scale reduction factor are violated in MrBayes.                               
+                                                                                 
+   List of taxa in bipartitions:                                                 
+                                                                                   
+      1 -- MT019612.1
+      2 -- HM627186.1
+      3 -- MT019613.1
+      4 -- MT019609.1
+      5 -- MT019614.1
+      6 -- MT019616.1
+      7 -- MT019615.1
+      8 -- MT019610.1
+      9 -- MT019611.1
+     10 -- MT019608.1
+     11 -- HM627187.1
+     12 -- MT019617.1
+     13 -- MT019618.1
+     14 -- MT019619.1
+     15 -- ON158117.1
+     16 -- ON158119.1
+     17 -- ON158118.1
+     18 -- ON158116.1
+     19 -- GU190711.1
+     20 -- GU212857.1
+     21 -- GU212856.1
+     22 -- GU212858.1
+     23 -- PQ185534.1
+
+   Key to taxon bipartitions (saved to file "clustal_aligned.nex.parts"):
+
+   ID -- Partition
+   -----------------------------
+    1 -- .**********************
+    2 -- .*.....................
+    3 -- ..*....................
+    4 -- ...*...................
+    5 -- ....*..................
+    6 -- .....*.................
+    7 -- ......*................
+    8 -- .......*...............
+    9 -- ........*..............
+   10 -- .........*.............
+   11 -- ..........*............
+   12 -- ...........*...........
+   13 -- ............*..........
+   14 -- .............*.........
+   15 -- ..............*........
+   16 -- ...............*.......
+   17 -- ................*......
+   18 -- .................*.....
+   19 -- ..................*....
+   20 -- ...................*...
+   21 -- ....................*..
+   22 -- .....................*.
+   23 -- ......................*
+   24 -- ..........**...........
+   25 -- .......**..............
+   26 -- ..................*****
+   27 -- ..................**...
+   28 -- ..............****.....
+   29 -- ...**..................
+   30 -- ......*****************
+   31 -- ......*...*************
+   32 -- ..............*********
+   33 -- ..........*************
+   34 -- ..............**.......
+   35 -- ..............***......
+   36 -- ..........****.........
+   37 -- ....................**.
+   38 -- .....******************
+   39 -- .......***.............
+   40 -- ............**.........
+   41 -- ..................****.
+   42 -- ..........**.*.........
+   43 -- ..................**..*
+   44 -- ......***.*************
+   45 -- .*.**..................
+   46 -- .**....................
+   47 -- .**..******************
+   48 -- ..***..................
+   49 -- .*.********************
+   50 -- .****..................
+   51 -- ..*********************
+   52 -- ..*..******************
+   53 -- ...********************
+   54 -- .*...******************
+   55 -- ....................***
+   56 -- ..........***..........
+   -----------------------------
+
+   Summary statistics for informative taxon bipartitions
+      (saved to file "clustal_aligned.nex.tstat"):
+
+   ID   #obs    Probab.     Sd(s)+      Min(s)      Max(s)   Nruns 
+   ----------------------------------------------------------------
+   24  1112    1.000000    0.000000    1.000000    1.000000    2
+   25  1112    1.000000    0.000000    1.000000    1.000000    2
+   26  1112    1.000000    0.000000    1.000000    1.000000    2
+   27  1112    1.000000    0.000000    1.000000    1.000000    2
+   28  1112    1.000000    0.000000    1.000000    1.000000    2
+   29  1112    1.000000    0.000000    1.000000    1.000000    2
+   30  1112    1.000000    0.000000    1.000000    1.000000    2
+   31  1112    1.000000    0.000000    1.000000    1.000000    2
+   32  1112    1.000000    0.000000    1.000000    1.000000    2
+   33  1112    1.000000    0.000000    1.000000    1.000000    2
+   34  1112    1.000000    0.000000    1.000000    1.000000    2
+   35  1112    1.000000    0.000000    1.000000    1.000000    2
+   36  1112    1.000000    0.000000    1.000000    1.000000    2
+   37   992    0.892086    0.017805    0.879496    0.904676    2
+   38   684    0.615108    0.076306    0.561151    0.669065    2
+   39   646    0.580935    0.017805    0.568345    0.593525    2
+   40   517    0.464928    0.090296    0.401079    0.528777    2
+   41   511    0.459532    0.052143    0.422662    0.496403    2
+   42   485    0.436151    0.067404    0.388489    0.483813    2
+   43   468    0.420863    0.058502    0.379496    0.462230    2
+   44   466    0.419065    0.017805    0.406475    0.431655    2
+   45   208    0.187050    0.002544    0.185252    0.188849    2
+   46   207    0.186151    0.001272    0.185252    0.187050    2
+   47   206    0.185252    0.005087    0.181655    0.188849    2
+   48   200    0.179856    0.012718    0.170863    0.188849    2
+   49   184    0.165468    0.002544    0.163669    0.167266    2
+   50   173    0.155576    0.013990    0.145683    0.165468    2
+   51   167    0.150180    0.054686    0.111511    0.188849    2
+   52   167    0.150180    0.016533    0.138489    0.161871    2
+   53   157    0.141187    0.011446    0.133094    0.149281    2
+   54   156    0.140288    0.010174    0.133094    0.147482    2
+   55   133    0.119604    0.006359    0.115108    0.124101    2
+   56   110    0.098921    0.022892    0.082734    0.115108    2
+   ----------------------------------------------------------------
+   + Convergence diagnostic (standard deviation of split frequencies)
+     should approach 0.0 as runs converge.
+
+
+   Summary statistics for branch and node parameters
+      (saved to file "clustal_aligned.nex.vstat"):
+
+                                           95% HPD Interval
+                                         --------------------
+   Parameter      Mean       Variance     Lower       Upper       Median     PSRF+  Nruns
+   --------------------------------------------------------------------------------------
+   length[1]     0.000182    0.000000    0.000002    0.000395    0.000155    0.999    2
+   length[2]     0.000088    0.000000    0.000000    0.000262    0.000063    1.013    2
+   length[3]     0.000092    0.000000    0.000000    0.000258    0.000062    1.012    2
+   length[4]     0.000085    0.000000    0.000000    0.000271    0.000058    1.002    2
+   length[5]     0.000084    0.000000    0.000000    0.000245    0.000061    1.003    2
+   length[6]     0.000505    0.000000    0.000161    0.000883    0.000477    0.999    2
+   length[7]     0.006657    0.000002    0.004060    0.009153    0.006545    1.000    2
+   length[8]     0.009581    0.000001    0.007653    0.011284    0.009647    1.014    2
+   length[9]     0.013034    0.000001    0.011055    0.015296    0.013040    1.003    2
+   length[10]    0.021671    0.000002    0.018744    0.024525    0.021733    0.999    2
+   length[11]    0.011410    0.000001    0.009424    0.013396    0.011393    1.000    2
+   length[12]    0.009619    0.000001    0.007807    0.011965    0.009518    0.999    2
+   length[13]    0.000489    0.000000    0.000001    0.001128    0.000442    1.000    2
+   length[14]    0.007467    0.000001    0.005878    0.009513    0.007466    1.005    2
+   length[15]    0.009133    0.000001    0.007460    0.010724    0.009119    1.021    2
+   length[16]    0.009986    0.000001    0.008228    0.012123    0.009968    1.008    2
+   length[17]    0.029672    0.000004    0.025168    0.033382    0.029585    1.003    2
+   length[18]    0.032555    0.000011    0.026641    0.039037    0.032580    1.001    2
+   length[19]    0.002122    0.000000    0.001385    0.003122    0.002068    1.013    2
+   length[20]    0.002997    0.000000    0.002048    0.003998    0.002949    1.000    2
+   length[21]    0.006639    0.000001    0.005295    0.008608    0.006625    1.004    2
+   length[22]    0.008416    0.000001    0.006481    0.010057    0.008459    1.001    2
+   length[23]    0.014435    0.000012    0.007899    0.019303    0.015343    1.002    2
+   length[24]    0.021863    0.000004    0.018432    0.025436    0.021878    1.007    2
+   length[25]    0.002494    0.000000    0.001395    0.003628    0.002427    1.000    2
+   length[26]    0.412995    0.000430    0.374101    0.457856    0.412448    1.003    2
+   length[27]    0.011391    0.000003    0.007860    0.014464    0.011571    1.001    2
+   length[28]    0.179273    0.000129    0.157563    0.200067    0.180428    0.999    2
+   length[29]    0.000274    0.000000    0.000042    0.000596    0.000247    1.000    2
+   length[30]    0.007357    0.000001    0.005704    0.009197    0.007340    1.001    2
+   length[31]    0.005815    0.000002    0.002965    0.008101    0.005782    0.999    2
+   length[32]    0.119006    0.000090    0.098083    0.134470    0.118813    0.999    2
+   length[33]    0.101850    0.000040    0.088450    0.112782    0.101676    0.999    2
+   length[34]    0.013042    0.000002    0.010332    0.015436    0.012963    1.000    2
+   length[35]    0.021915    0.000010    0.016282    0.027929    0.022052    0.999    2
+   length[36]    0.119652    0.000053    0.104664    0.133450    0.119650    1.005    2
+   length[37]    0.004129    0.000003    0.000273    0.006651    0.004673    1.002    2
+   length[38]    0.000172    0.000000    0.000004    0.000425    0.000143    1.001    2
+   length[39]    0.001267    0.000000    0.000509    0.002112    0.001248    1.001    2
+   length[40]    0.002099    0.000001    0.000248    0.003997    0.001943    0.999    2
+   length[41]    0.005604    0.000007    0.001441    0.011788    0.005407    1.017    2
+   length[42]    0.000814    0.000000    0.000230    0.001655    0.000778    1.001    2
+   length[43]    0.003886    0.000002    0.000958    0.006397    0.003944    1.003    2
+   length[44]    0.001562    0.000000    0.000822    0.002712    0.001547    0.999    2
+   length[45]    0.000088    0.000000    0.000001    0.000240    0.000068    0.995    2
+   length[46]    0.000116    0.000000    0.000000    0.000393    0.000078    0.996    2
+   length[47]    0.000094    0.000000    0.000000    0.000278    0.000066    1.010    2
+   length[48]    0.000084    0.000000    0.000000    0.000287    0.000052    0.999    2
+   length[49]    0.000078    0.000000    0.000001    0.000260    0.000055    0.995    2
+   length[50]    0.000089    0.000000    0.000000    0.000253    0.000065    0.996    2
+   length[51]    0.000098    0.000000    0.000000    0.000248    0.000077    1.008    2
+   length[52]    0.000087    0.000000    0.000000    0.000238    0.000062    0.995    2
+   length[53]    0.000088    0.000000    0.000000    0.000268    0.000057    1.018    2
+   length[54]    0.000092    0.000000    0.000000    0.000287    0.000069    0.994    2
+   length[55]    0.003631    0.000004    0.000039    0.006362    0.003733    0.993    2
+   length[56]    0.001139    0.000000    0.000058    0.002320    0.001159    0.994    2
+   --------------------------------------------------------------------------------------
+   + Convergence diagnostic (PSRF = Potential Scale Reduction Factor; Gelman
+     and Rubin, 1992) should approach 1.0 as runs converge. NA is reported when
+     deviation of parameter values within all runs is 0 or when a parameter
+     value (a branch length, for instance) is not sampled in all runs.
+
+
+   Summary statistics for partitions with frequency >= 0.10 in at least one run:
+       Average standard deviation of split frequencies = 0.016918
+       Maximum standard deviation of split frequencies = 0.090296
+       Average PSRF for parameter values (excluding NA and >10.0) = 1.002
+       Maximum PSRF for parameter values = 1.021
+
+
+   Clade credibility values:
+
+   /--------------------------------------------------------------- MT019612.1 (1)
+   |                                                                               
+   |--------------------------------------------------------------- HM627186.1 (2)
+   |                                                                               
+   |--------------------------------------------------------------- MT019613.1 (3)
+   |                                                                               
+   |                                                       /------- MT019609.1 (4)
+   |--------------------------100--------------------------+                       
+   |                                                       \------- MT019614.1 (5)
+   |                                                                               
+   |      /-------------------------------------------------------- MT019616.1 (6)
+   +      |                                                                        
+   |      |             /------------------------------------------ MT019615.1 (7)
+   |      |             |                                                          
+   |      |             |                                  /------- HM627187.1 (11)
+   |      |             |                           /--100-+                       
+   |      |             |                           |      \------- MT019617.1 (12)
+   |      |             |                           |                              
+   |      |             |      /---------100--------+-------------- MT019618.1 (13)
+   |      |      /--100-+      |                    |                              
+   |      |      |      |      |                    \-------------- MT019619.1 (14)
+   \--62--+      |      |      |                                                   
+          |      |      |      |                           /------- ON158117.1 (15)
+          |      |      |      |                    /--100-+                       
+          |      |      |      |                    |      \------- ON158119.1 (16)
+          |      |      \--100-+             /--100-+                              
+          |      |             |             |      \-------------- ON158118.1 (17)
+          |      |             |      /--100-+                                     
+          |      |             |      |      \--------------------- ON158116.1 (18)
+          |      |             |      |                                            
+          |      |             |      |                    /------- GU190711.1 (19)
+          \--100-+             \--100-+             /--100-+                       
+                 |                    |             |      \------- GU212857.1 (20)
+                 |                    |             |                              
+                 |                    |             |      /------- GU212856.1 (21)
+                 |                    \-----100-----+--89--+                       
+                 |                                  |      \------- GU212858.1 (22)
+                 |                                  |                              
+                 |                                  \-------------- PQ185534.1 (23)
+                 |                                                                 
+                 |                                         /------- MT019610.1 (8)
+                 |                                  /--100-+                       
+                 |                                  |      \------- MT019611.1 (9)
+                 \----------------58----------------+                              
+                                                    \-------------- MT019608.1 (10)
+                                                                                   
+
+   Phylogram (based on average branch lengths):
+
+   / MT019612.1 (1)
+   |                                                                               
+   | HM627186.1 (2)
+   |                                                                               
+   | MT019613.1 (3)
+   |                                                                               
+   | MT019609.1 (4)
+   |                                                                               
+   | MT019614.1 (5)
+   |                                                                               
+   | MT019616.1 (6)
+   +                                                                               
+   |/- MT019615.1 (7)
+   ||                                                                              
+   ||                      /-- HM627187.1 (11)
+   ||                    /-+                                                       
+   ||                    | \- MT019617.1 (12)
+   ||                    |                                                         
+   ||         /----------+ MT019618.1 (13)
+   ||         |          |                                                         
+   ||         |          \- MT019619.1 (14)
+   ||         |                                                                    
+   ||         |                               /- ON158117.1 (15)
+   ||         |                              /+                                    
+   ||         |                              |\- ON158119.1 (16)
+   ||---------+                           /--+                                     
+   ||         |                           |  \-- ON158118.1 (17)
+   ||         |          /----------------+                                        
+   ||         |          |                \---- ON158116.1 (18)
+   ||         |          |                                                         
+   ||         |          |                                        / GU190711.1 (19)
+   \+         \----------+                                       /+                
+    |                    |                                       |\ GU212857.1 (20)
+    |                    |                                       |                 
+    |                    |                                       |- GU212856.1 (21)
+    |                    \---------------------------------------+                 
+    |                                                            |- GU212858.1 (22)
+    |                                                            |                 
+    |                                                            \- PQ185534.1 (23)
+    |                                                                              
+    |- MT019610.1 (8)
+    |                                                                              
+    |- MT019611.1 (9)
+    |                                                                              
+    \-- MT019608.1 (10)
+                                                                                   
+   |--------| 0.100 expected changes per site
+
+   Calculating tree probabilities...
+
+   Credible sets of trees (616 trees sampled):
+      50 % credible set contains 137 trees
+      90 % credible set contains 505 trees
+      95 % credible set contains 561 trees
+      99 % credible set contains 605 trees
+
 
