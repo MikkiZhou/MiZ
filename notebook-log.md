@@ -2468,3 +2468,51 @@ MrBayes > sumt
       99 % credible set contains 605 trees
 
 
+# Coalescent- BEAST
+Download Instructions for BEAST2: From https://www.beast2.org/
+ latest version of BEAST 2 is version 2.7.7.
+ 
+Downloaded Tracer from: https://github.com/beast-dev/tracer/releases 
+Tracer v1.7.2 ;  Tracer.v1.7.2.dmg --- Mac OS X version
+
+Downloaded FigTree from: https://github.com/rambaut/figtree/releases
+FigTree v1.4.4 ; FigTree.v1.4.4.dmg
+
+
+Cheatsheet BEAST
+    Description   a cross-platform program for Bayesian analysis of molecular sequences using MCMC (Markov Chain Monte Carlo). It infers rooted, time-measured phylogenies. Primarily used for molecular clock analyses and dating evolutionary events.
+    Strengths
+                - Flexible models of molecular evolution, clock models, and coalescent models
+                - Joint estimation of phylogeny and divergence times
+                - Integrates fossil and tip-date calibrations
+                - Great Visualization tools (Tracer, TreeAnnotator, FigTree)
+                - User friendly interface
+    Weakness    
+                - Computationally intensive (long runtimes, especially for large datasets)
+                - Too much user choices, steep learning curve
+                - Requires careful convergence and mixing diagnostics
+    Assumptions 
+                - Substitution models (e.g., HKY, GTR) assume site independence
+                - Molecular clock assumptions (strict, relaxed lognormal, etc.)
+                - Tree prior assumptions (e.g., Yule process, coalescent)
+                - Sequence data evolves along a single bifurcating tree
+                - MCMC converges to true posterior distribution
+    User Choices
+                - a ton of user choices like substitution models, clock model, priors, MCMC setting, partitions, etc.
+    
+Using the StarBeast3 Tutorial: https://github.com/rbouckaert/starbeast3/blob/master/workshop/README.md
+
+1. Downloaded nex files: fossils.fasta ; primates_3loci.nex
+2. Initialise the StarBeast3 template. File => Template => StarBeast3.
+2. Load files into BEAUti
+3. Taxon Sets => Guess  => Split on character => _ => and take groups 1-2 => OK
+4. Site Model => HKY (for all)
+5. Species Clock Model => Species Tree Relaxed Clock => Check estimate box beside clock rate
+6. Priors => SpeciesTreeRelaxedClockRate.Species =>  LogNormal(M=0.0025, S=1) => Check "Mean In Real Space" => Tree.t:Species => FBDModel => diversificationRateFBD.t:Species =>  LogNormal(M=1, S=3) => Check "Mean in Real Space" => turnoverFBD.t:Species => Beta(alpha=5, beta=1) => popMean => LogNormal(M=1, S=2) =>Check "Mean in Real Space"
+7. Tip Dates => Enable Use tip dates => set fossil 1,2,3, to 5.2,12.5,36.9 
+8. Priors => Add Priors => add for each fossil => change parameters as the table provided
+9. Priors => Add Priors => Add clade => Check monophyletic
+10. MCMC => Chain Length = 20000000
+11. Save as Toy_data.xml in Downloads/
+
+Run BEAST 2 using the downloaded interface BEAST
